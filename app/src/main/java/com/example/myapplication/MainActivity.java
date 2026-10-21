@@ -1,0 +1,188 @@
+package com.example.myapplication;
+
+import android.os.Bundle;
+import android.content.SharedPreferences;
+import android.util.Patterns;
+import android.view.View;
+import android.widget.*;
+import androidx.appcompat.app.AppCompatActivity;
+
+public class MainActivity extends AppCompatActivity {
+
+    EditText firstName, lastName, email;
+    RadioGroup gradeGroup;
+    Spinner major;
+    CheckBox notifications, terms;
+    TextView result, gradeError, majorError;
+    SharedPreferences sp;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+
+        firstName = findViewById(R.id.firstName);
+        lastName = findViewById(R.id.lastName);
+        email = findViewById(R.id.email);
+        gradeGroup = findViewById(R.id.gradeGroup);
+        major = findViewById(R.id.major);
+        notifications = findViewById(R.id.notifications);
+        terms = findViewById(R.id.terms);
+        result = findViewById(R.id.result);
+        gradeError = findViewById(R.id.gradeError);
+        majorError = findViewById(R.id.majorError);
+
+        sp = getSharedPreferences("Student", MODE_PRIVATE);
+
+        loadStudent();
+
+        findViewById(R.id.register).setOnClickListener(v -> register());
+    }
+
+    private void register() {
+        firstName.setError(null);
+        lastName.setError(null);
+        email.setError(null);
+        terms.setError(null);
+
+        gradeError.setVisibility(View.GONE);
+        majorError.setVisibility(View.GONE);
+
+        boolean valid = true;
+
+        String first = firstName.getText().toString().trim();
+        String last = lastName.getText().toString().trim();
+        String mail = email.getText().toString().trim();
+
+        if (first.isEmpty()) {
+            firstName.setError(getString(R.string.error_first));
+            valid = false;
+        }
+
+        if (last.isEmpty()) {
+            lastName.setError(getString(R.string.error_last));
+            valid = false;
+        }
+
+        if (mail.isEmpty()) {
+            email.setError(getString(R.string.error_email));
+            valid = false;
+        } else if (!Patterns.EMAIL_ADDRESS.matcher(mail).matches()) {
+            email.setError(getString(R.string.error_email_invalid));
+            valid = false;
+        }
+
+        int id = gradeGroup.getCheckedRadioButtonId();
+        String grade = "";
+
+        if (id == -1) {
+            gradeError.setVisibility(View.VISIBLE);
+            valid = false;
+        } else {
+            RadioButton rb = findViewById(id);
+            grade = rb.getText().toString();
+        }
+
+        String selectedMajor = "";
+
+        if (major.getSelectedItemPosition() == 0) {
+            majorError.setVisibility(View.VISIBLE);
+            valid = false;
+        } else {
+            selectedMajor = major.getSelectedItem().toString();
+        }
+
+        if (!terms.isChecked()) {
+            terms.setError(getString(R.string.error_terms));
+            valid = false;
+        }
+
+        if (!valid) {
+            result.setVisibility(View.GONE);
+            return;
+        }
+
+        Student s = new Student(
+                first,
+                last,
+                mail,
+                grade,
+                selectedMajor,
+                notifications.isChecked(),
+                terms.isChecked()
+        );
+
+        saveStudent(s);
+        showStudent(s);
+    }
+
+    private void saveStudent(Student s) {
+        SharedPreferences.Editor e = sp.edit();
+
+        e.putString("first", s.firstName);
+        e.putString("last", s.lastName);
+        e.putString("email", s.email);
+        e.putString("grade", s.grade);
+        e.putString("major", s.major);
+        e.putBoolean("notifications", s.notifications);
+        e.putBoolean("terms", s.terms);
+
+        e.apply();
+    }
+
+    private void loadStudent() {
+        if (!sp.contains("first")) {
+            result.setVisibility(View.GONE);
+            return;
+        }
+
+        Student s = new Student(
+                sp.getString("first", ""),
+                sp.getString("last", ""),
+                sp.getString("email", ""),
+                sp.getString("grade", ""),
+                sp.getString("major", ""),
+                sp.getBoolean("notifications", false),
+                sp.getBoolean("terms", false)
+        );
+
+        firstName.setText(s.firstName);
+        lastName.setText(s.lastName);
+        email.setText(s.email);
+
+        if (s.grade.equals(getString(R.string.grade10)))
+            gradeGroup.check(R.id.grade10);
+        else if (s.grade.equals(getString(R.string.grade11)))
+            gradeGroup.check(R.id.grade11);
+        else if (s.grade.equals(getString(R.string.grade12)))
+            gradeGroup.check(R.id.grade12);
+
+        for (int i = 1; i < major.getCount(); i++) {
+            if (major.getItemAtPosition(i).toString().equals(s.major)) {
+                major.setSelection(i);
+                break;
+            }
+        }
+
+        notifications.setChecked(s.notifications);
+        terms.setChecked(s.terms);
+
+        showStudent(s);
+    }
+
+    private void showStudent(Student s) {
+        String text =
+                getString(R.string.result_first, s.firstName) + "\n" +
+                        getString(R.string.result_last, s.lastName) + "\n" +
+                        getString(R.string.result_email, s.email) + "\n" +
+                        getString(R.string.result_grade, s.grade) + "\n" +
+                        getString(R.string.result_major, s.major) + "\n" +
+                        getString(R.string.result_notifications,
+                                getString(s.notifications ? R.string.yes : R.string.no)) + "\n" +
+                        getString(R.string.result_terms,
+                                getString(s.terms ? R.string.yes : R.string.no));
+
+        result.setText(text);
+        result.setVisibility(View.VISIBLE);
+    }
+}

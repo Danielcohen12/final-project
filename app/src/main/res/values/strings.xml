@@ -1,0 +1,45 @@
+<resources>
+    <string name="app_name">Student Registration</string>
+    <string name="title">Student Registration Form</string>
+    <string name="first_name">First Name</string>
+    <string name="last_name">Last Name</string>
+    <string name="email">Email</string>
+
+    <string name="grade_title">Choose Grade:</string>
+    <string name="grade10">10th Grade</string>
+    <string name="grade11">11th Grade</string>
+    <string name="grade12">12th Grade</string>
+
+    <string name="major_title">Choose Major:</string>
+
+    <string-array name="majors">
+        <item>Select a Major</item>
+        <item>Computer Science</item>
+        <item>Physics</item>
+        <item>Biology</item>
+        <item>Chemistry</item>
+    </string-array>
+
+    <string name="notifications">I agree to receive notifications</string>
+    <string name="terms">I accept the terms of use</string>
+    <string name="register_button">Register</string>
+
+    <string name="error_first">Please enter your first name</string>
+    <string name="error_last">Please enter your last name</string>
+    <string name="error_email">Please enter your email</string>
+    <string name="error_email_invalid">Please enter a valid email address</string>
+    <string name="error_grade">Please select a grade</string>
+    <string name="error_major">Please select a major</string>
+    <string name="error_terms">You must accept the terms of use</string>
+
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
+
+    <string name="result_first">First Name: %1$s</string>
+    <string name="result_last">Last Name: %1$s</string>
+    <string name="result_email">Email: %1$s</string>
+    <string name="result_grade">Grade: %1$s</string>
+    <string name="result_major">Major: %1$s</string>
+    <string name="result_notifications">Notifications: %1$s</string>
+    <string name="result_terms">Terms Accepted: %1$s</string>
+</resources>
