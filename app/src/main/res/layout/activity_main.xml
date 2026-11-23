@@ -74,6 +74,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/error_grade"
+            android:textColor="@android:color/holo_red_dark"
             android:visibility="gone" />
 
         <TextView
@@ -93,6 +94,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/error_major"
+            android:textColor="@android:color/holo_red_dark"
             android:visibility="gone" />
 
         <CheckBox

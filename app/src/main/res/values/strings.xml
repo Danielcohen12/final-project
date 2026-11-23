@@ -1,6 +1,8 @@
 <resources>
+
     <string name="app_name">Student Registration</string>
     <string name="title">Student Registration Form</string>
+
     <string name="first_name">First Name</string>
     <string name="last_name">Last Name</string>
     <string name="email">Email</string>
@@ -42,4 +44,19 @@
     <string name="result_major">Major: %1$s</string>
     <string name="result_notifications">Notifications: %1$s</string>
     <string name="result_terms">Terms Accepted: %1$s</string>
+
+    <string name="details_title">Student Details</string>
+    <string name="edit_title">Edit Student Details</string>
+    <string name="edit_button">Edit Details</string>
+    <string name="email_button">Send Email</string>
+    <string name="share_button">Share Details</string>
+    <string name="save_button">Save and Return</string>
+    <string name="cancel_button">Cancel</string>
+
+    <string name="email_subject">פרטי תלמיד</string>
+    <string name="email_chooser">Choose Email App</string>
+    <string name="share_chooser">Share Student Details</string>
+    <string name="no_email_app">No email app available</string>
+    <string name="no_share_app">No sharing app available</string>
+
 </resources>

@@ -1,10 +1,12 @@
 package com.example.myapplication;
 
-class Student {
+import java.io.Serializable;
+
+public class student implements Serializable {
     String firstName, lastName, email, grade, major;
     boolean notifications, terms;
 
-    public Student(String firstName, String lastName,
+    public student(String firstName, String lastName,
                    String email, String grade, String major,
                    boolean notifications, boolean terms) {
         this.firstName = firstName;

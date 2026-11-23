@@ -1,10 +1,12 @@
 package com.example.myapplication;
 
 import android.os.Bundle;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.util.Patterns;
 import android.view.View;
 import android.widget.*;
+
 import androidx.appcompat.app.AppCompatActivity;
 
 public class MainActivity extends AppCompatActivity {
@@ -39,7 +41,14 @@ public class MainActivity extends AppCompatActivity {
         findViewById(R.id.register).setOnClickListener(v -> register());
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        loadStudent();
+    }
+
     private void register() {
+
         firstName.setError(null);
         lastName.setError(null);
         email.setError(null);
@@ -102,7 +111,7 @@ public class MainActivity extends AppCompatActivity {
             return;
         }
 
-        Student s = new Student(
+        student s = new student(
                 first,
                 last,
                 mail,
@@ -113,10 +122,13 @@ public class MainActivity extends AppCompatActivity {
         );
 
         saveStudent(s);
-        showStudent(s);
+
+        Intent intent = new Intent(MainActivity.this, DetailsActivity.class);
+        intent.putExtra("student", s);
+        startActivity(intent);
     }
 
-    private void saveStudent(Student s) {
+    private void saveStudent(student s) {
         SharedPreferences.Editor e = sp.edit();
 
         e.putString("first", s.firstName);
@@ -131,12 +143,13 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void loadStudent() {
+
         if (!sp.contains("first")) {
             result.setVisibility(View.GONE);
             return;
         }
 
-        Student s = new Student(
+        student s = new student(
                 sp.getString("first", ""),
                 sp.getString("last", ""),
                 sp.getString("email", ""),
@@ -166,23 +179,5 @@ public class MainActivity extends AppCompatActivity {
 
         notifications.setChecked(s.notifications);
         terms.setChecked(s.terms);
-
-        showStudent(s);
-    }
-
-    private void showStudent(Student s) {
-        String text =
-                getString(R.string.result_first, s.firstName) + "\n" +
-                        getString(R.string.result_last, s.lastName) + "\n" +
-                        getString(R.string.result_email, s.email) + "\n" +
-                        getString(R.string.result_grade, s.grade) + "\n" +
-                        getString(R.string.result_major, s.major) + "\n" +
-                        getString(R.string.result_notifications,
-                                getString(s.notifications ? R.string.yes : R.string.no)) + "\n" +
-                        getString(R.string.result_terms,
-                                getString(s.terms ? R.string.yes : R.string.no));
-
-        result.setText(text);
-        result.setVisibility(View.VISIBLE);
     }
 }
